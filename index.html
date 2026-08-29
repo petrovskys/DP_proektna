@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Side Street Garage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black:#0d0d0d;
+    --charcoal:#1a1a1a;
+    --charcoal-2:#232323;
+    --orange:#ff6a00;
+    --orange-light:#ffb066;
+    --white:#ffffff;
+    --off-white:#f5f4f0;
+    --gray:#9a9a94;
+    --gray-line:#333331;
+    --radius:2px;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+
+  html{scroll-behavior:smooth;}
+
+  body{
+    font-family:'Inter',sans-serif;
+    background:var(--off-white);
+    color:var(--black);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  h1,h2,h3,.display{
+    font-family:'Archivo Black',sans-serif;
+    text-transform:uppercase;
+    line-height:1.05;
+    letter-spacing:-0.01em;
+  }
+
+  .eyebrow{
+    font-family:'Oswald',sans-serif;
+    font-weight:600;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    font-size:0.75rem;
+    color:var(--orange);
+  }
+
+  a{color:inherit;}
+  img{max-width:100%;display:block;}
+  button{font-family:inherit;cursor:pointer;}
+
+  .wrap{
+    max-width:1160px;
+    margin:0 auto;
+    padding:0 28px;
+  }
+
+
+  .hazard{
+    height:14px;
+    width:100%;
+    background:repeating-linear-gradient(
+      -45deg,
+      var(--black),
+      var(--black) 16px,
+      var(--orange) 16px,
+      var(--orange) 32px
+    );
+  }
+  .hazard.thin{height:8px;}
+
+
+  header.site-header{
+    background:var(--black);
+    color:var(--white);
+    position:sticky;
+    top:0;
+    z-index:100;
+  }
+
+  .nav-inner{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+    padding:16px 0;
+  }
+
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:14px;
+  }
+
+  .logo-slot{
+    width:52px;
+    height:52px;
+    flex:0 0 auto;
+    border-radius:50%;
+    object-fit:cover;
+  }
+
+  .brand-name{
+    font-size:1.15rem;
+    letter-spacing:-0.01em;
+    color:var(--white);
+  }
+  .brand-name span{color:var(--orange);}
+
+  nav.main-links{
+    display:flex;
+    gap:26px;
+    font-family:'Oswald',sans-serif;
+    font-weight:500;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    font-size:0.85rem;
+  }
+  nav.main-links a{
+    text-decoration:none;
+    color:var(--off-white);
+    border-bottom:2px solid transparent;
+    padding-bottom:4px;
+    transition:border-color .2s ease, color .2s ease;
+  }
+  nav.main-links a:hover{
+    color:var(--orange-light);
+    border-color:var(--orange);
+  }
+
+  .lang-switch{
+    display:flex;
+    border:1px solid var(--gray-line);
+    border-radius:20px;
+    overflow:hidden;
+  }
+  .lang-switch button{
+    background:transparent;
+    border:none;
+    color:var(--gray);
+    font-family:'Oswald',sans-serif;
+    font-size:0.75rem;
+    font-weight:600;
+    letter-spacing:0.05em;
+    padding:7px 12px;
+    transition:background .2s ease, color .2s ease;
+  }
+  .lang-switch button.active{
+    background:var(--orange);
+    color:var(--black);
+  }
+  .lang-switch button:not(.active):hover{
+    color:var(--white);
+  }
+
+  .mobile-toggle{
+    display:none;
+    background:none;
+    border:1px solid var(--gray-line);
+    color:var(--white);
+    padding:8px 10px;
+    border-radius:4px;
+  }
+
+
+  .hero{
+    background:var(--black);
+    color:var(--white);
+    padding:64px 0 56px;
+    position:relative;
+  }
+  .hero-inner{
+    display:grid;
+    grid-template-columns:1.15fr 0.85fr;
+    gap:48px;
+    align-items:center;
+  }
+  .hero h1{
+    font-size:clamp(2.4rem, 5vw, 3.6rem);
+    margin:14px 0 20px;
+  }
+  .hero h1 .accent{color:var(--orange);}
+  .hero p.sub{
+    color:var(--gray);
+    font-size:1.05rem;
+    max-width:46ch;
+    margin-bottom:30px;
+  }
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    font-family:'Oswald',sans-serif;
+    font-weight:600;
+    letter-spacing:0.05em;
+    text-transform:uppercase;
+    font-size:0.9rem;
+    padding:14px 26px;
+    border-radius:2px;
+    text-decoration:none;
+    border:2px solid var(--orange);
+    transition:transform .15s ease, background .2s ease, color .2s ease;
+  }
+  .btn-solid{
+    background:var(--orange);
+    color:var(--black);
+  }
+  .btn-solid:hover{
+    background:var(--orange-light);
+    transform:translateY(-2px);
+  }
+
+  .hero-visual{
+    aspect-ratio:4/5;
+    border:2px dashed var(--gray-line);
+    border-radius:4px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    gap:10px;
+    text-align:center;
+    overflow: hidden;
+    background:
+      repeating-linear-gradient(-45deg, var(--charcoal), var(--charcoal) 12px, var(--charcoal-2) 12px, var(--charcoal-2) 24px);
+  }
+  .hero-visual svg{width:46px;height:46px;stroke:var(--orange);}
+  .hero-visual .ph-label{
+    font-family:'Oswald',sans-serif;
+    font-size:0.75rem;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--gray);
+  }
+  .hero-visual img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  section{
+    padding:72px 0;
+  }
+  .section-head{
+    max-width:640px;
+    margin-bottom:42px;
+  }
+  .section-head h2{
+    font-size:clamp(1.7rem, 3.4vw, 2.4rem);
+    margin-top:10px;
+  }
+
+
+  .about{
+    background:var(--off-white);
+  }
+  .about-inner{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:48px;
+    align-items:start;
+  }
+  .about-text p{
+    color:#3a3a36;
+    margin-bottom:16px;
+    max-width:52ch;
+  }
+  .stat-row{
+    display:flex;
+    gap:32px;
+    margin-top:28px;
+    flex-wrap:wrap;
+  }
+  .stat{
+    border-left:3px solid var(--orange);
+    padding-left:14px;
+  }
+  .stat .num{
+    font-family:'Archivo Black',sans-serif;
+    font-size:1.8rem;
+    display:block;
+  }
+  .stat .lbl{
+    font-family:'Oswald',sans-serif;
+    font-size:0.72rem;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:#66665f;
+  }
+  .info-card{
+    background:var(--black);
+    color:var(--white);
+    padding:30px;
+    border-radius:4px;
+  }
+  .info-card h3{
+    color:var(--orange);
+    font-size:1rem;
+    margin-bottom:16px;
+  }
+  .info-list{
+    list-style:none;
+  }
+  .info-list li{
+    display:flex;
+    justify-content:space-between;
+    padding:10px 0;
+    border-bottom:1px solid var(--gray-line);
+    font-size:0.92rem;
+  }
+  .info-list li:last-child{border-bottom:none;}
+  .info-list span.k{color:var(--gray);}
+
+
+  .services{
+    background:var(--charcoal);
+    color:var(--white);
+  }
+  .services .section-head .eyebrow{color:var(--orange-light);}
+  .services-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:30px;
+  }
+  .service-card{
+    background:var(--black);
+    border:1px solid var(--gray-line);
+    border-radius:4px;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    transition:transform .2s ease, border-color .2s ease;
+  }
+  .service-card:hover{
+    transform:translateY(-4px);
+    border-color:var(--orange);
+  }
+  .service-photo{
+    aspect-ratio:16/10;
+    background:repeating-linear-gradient(-45deg, #262624, #262624 10px, #1c1c1a 10px, #1c1c1a 20px);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    gap:8px;
+    color:var(--gray);
+    border-bottom:3px solid var(--orange);
+    overflow: hidden;
+  }
+  .service-photo svg{width:30px;height:30px;stroke:var(--orange-light);}
+  .service-photo img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .service-photo span{
+    font-family:'Oswald',sans-serif;
+    font-size:0.68rem;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+  }
+  .service-body{
+    padding:22px 22px 26px;
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .service-icon{
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    background:var(--orange);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .service-icon svg{width:20px;height:20px;stroke:var(--black);}
+  .service-body h3{
+    font-family:'Oswald',sans-serif;
+    text-transform:uppercase;
+    font-size:1.02rem;
+    letter-spacing:0.02em;
+    font-weight:600;
+  }
+  .service-body p{
+    color:var(--gray);
+    font-size:0.92rem;
+  }
+
+
+  .contact{
+    background:var(--off-white);
+  }
+  .contact-inner{
+    display:grid;
+    grid-template-columns:0.85fr 1.15fr;
+    gap:48px;
+  }
+  .contact-info h3{
+    font-family:'Oswald',sans-serif;
+    font-size:0.95rem;
+    text-transform:uppercase;
+    letter-spacing:0.04em;
+    margin-bottom:18px;
+    color:var(--black);
+  }
+  .contact-row{
+    display:flex;
+    gap:14px;
+    padding:14px 0;
+    border-bottom:1px solid #ddd9cf;
+  }
+  .contact-row:first-of-type{border-top:1px solid #ddd9cf;}
+  .contact-row .ic{
+    width:32px;height:32px;flex:0 0 auto;
+    border-radius:50%;
+    background:var(--black);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .contact-row .ic svg{width:16px;height:16px;stroke:var(--orange);}
+  .contact-row .txt .k{
+    font-family:'Oswald',sans-serif;
+    font-size:0.68rem;
+    letter-spacing:0.07em;
+    text-transform:uppercase;
+    color:#8a8a80;
+  }
+  .contact-row .txt .v{font-weight:600;font-size:0.95rem;}
+
+  .map-slot{
+    margin-top:24px;
+    height:150px;
+    border:2px dashed #c9c5b8;
+    border-radius:4px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#9a9a90;
+    font-family:'Oswald',sans-serif;
+    font-size:0.75rem;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    text-align:center;
+    padding:10px;
+  }
+
+  form.contact-form{
+    background:var(--black);
+    padding:32px;
+    border-radius:4px;
+    display:grid;
+    gap:16px;
+  }
+  form.contact-form .row2{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+  }
+  .field label{
+    display:block;
+    font-family:'Oswald',sans-serif;
+    font-size:0.7rem;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:var(--gray);
+    margin-bottom:7px;
+  }
+  .field input,
+  .field textarea{
+    width:100%;
+    background:var(--charcoal);
+    border:1px solid var(--gray-line);
+    color:var(--white);
+    padding:12px 14px;
+    border-radius:2px;
+    font-family:'Inter',sans-serif;
+    font-size:0.95rem;
+  }
+  .field input:focus,
+  .field textarea:focus{
+    outline:2px solid var(--orange);
+    outline-offset:1px;
+  }
+  .field textarea{resize:vertical;min-height:110px;}
+  .form-submit{
+    background:var(--orange);
+    color:var(--black);
+    border:none;
+    padding:14px 26px;
+    font-family:'Oswald',sans-serif;
+    font-weight:600;
+    letter-spacing:0.05em;
+    text-transform:uppercase;
+    font-size:0.9rem;
+    border-radius:2px;
+    justify-self:start;
+    transition:background .2s ease, transform .15s ease;
+  }
+
+  .form-submit:hover{background:var(--orange-light);transform:translateY(-2px);}
+  .form-note{
+    font-size:0.78rem;
+    color:var(--gray);
+  }
+  .form-success{
+    display:none;
+    background:var(--charcoal-2);
+    border-left:3px solid var(--orange);
+    padding:12px 14px;
+    color:var(--white);
+    font-size:0.88rem;
+    border-radius:2px;
+  }
+  .form-success.show{display:block;}
+
+
+  footer{
+    background:var(--black);
+    color:var(--gray);
+    padding:24px 0;
+    text-align:center;
+    font-size:0.82rem;
+  }
+  footer .brand-name{font-size:0.95rem;}
+
+
+  @media (max-width: 880px){
+    .hero-inner,
+    .about-inner,
+    .contact-inner{
+      grid-template-columns:1fr;
+    }
+    .hero-visual{order:-1;max-width:280px;margin:0 auto;}
+    .services-grid{grid-template-columns:1fr 1fr;}
+  }
+
+  @media (max-width: 700px){
+    nav.main-links{
+      position:fixed;
+      top:73px;
+      left:0;
+      right:0;
+      background:var(--black);
+      flex-direction:column;
+      gap:0;
+      padding:0;
+      max-height:0;
+      overflow:hidden;
+      transition:max-height .3s ease;
+      border-top:1px solid var(--gray-line);
+    }
+    nav.main-links.open{max-height:260px;}
+    nav.main-links a{
+      padding:16px 28px;
+      border-bottom:1px solid var(--gray-line);
+      width:100%;
+    }
+    .mobile-toggle{display:block;}
+    .nav-right{display:flex;align-items:center;gap:10px;}
+    .services-grid{grid-template-columns:1fr;}
+    form.contact-form .row2{grid-template-columns:1fr;}
+    .brand-name{font-size:1rem;}
+  }
+
+  @media (max-width: 480px){
+    .wrap{padding:0 18px;}
+    section{padding:52px 0;}
+    .hero{padding:44px 0 40px;}
+    .stat-row{gap:22px;}
+  }
+
+  :focus-visible{outline:2px solid var(--orange);outline-offset:2px;}
+
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap nav-inner">
+    <div class="brand">
+      <img class="logo-slot" src="logo.jpg" alt="Side Street Garage logo">
+      <div class="brand-name">Side Street <span>Garage</span></div>
+    </div>
+    <nav class="main-links" id="mainNav">
+      <a href="#about" data-i18n="nav_about">About</a>
+      <a href="#services" data-i18n="nav_services">Services</a>
+      <a href="#contact" data-i18n="nav_contact">Contact</a>
+    </nav>
+    <div class="nav-right">
+      <div class="lang-switch" role="group" aria-label="Language switch">
+        <button type="button" data-lang="en">EN</button>
+        <button type="button" data-lang="mk">MK</button>
+        <button type="button" data-lang="sq">SQ</button>
+      </div>
+      <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
+    </div>
+  </div>
+</header>
+
+<div class="hazard"></div>
+
+<section class="hero">
+  <div class="wrap hero-inner">
+    <div>
+      <span class="eyebrow" data-i18n="hero_eyebrow">Local &amp; Independent</span>
+      <h1 data-i18n-html="hero_title">Honest work.<br>No <span class="accent">shortcuts.</span></h1>
+      <p class="sub" data-i18n="hero_sub">Side Street Garage keeps your car looking fresh and diagnosed properly - straight answers, fair prices, and mechanics who understand what your car actually needs.</p>
+      <a href="#contact" class="btn btn-solid" data-i18n="hero_cta">Book a Service</a>
+    </div>
+    <div class="hero-visual">
+      <img src="logowide.png" alt="Side Street Garage shop">
+    </div>
+  </div>
+</section>
+
+<section id="about" class="about">
+  <div class="wrap about-inner">
+    <div class="about-text">
+      <span class="eyebrow" data-i18n="about_eyebrow">Who We Are</span>
+      <div class="section-head" style="margin-bottom:0;">
+        <h2 data-i18n="about_title">About the Garage</h2>
+      </div>
+      <p data-i18n="about_p1">Side Street Garage is an auto repair shop serving the local community. We work on everyday cars, not just showroom pieces, and we treat every vehicle like it's our own.</p>
+      <p data-i18n="about_p2">No upselling, no confusing invoices - just clear explanations, honest timelines, and repairs and services done right the first time.</p>
+    </div>
+    <div class="info-card">
+      <h3 data-i18n="info_card_title">At a Glance</h3>
+      <ul class="info-list">
+        <li><span class="k" data-i18n="info_hours">Hours</span><span data-i18n="info_hours_val">Mon–Fri 8:00–18:00</span></li>
+        <li><span class="k" data-i18n="info_sat">Saturday</span><span data-i18n="info_sat_val">9:00–14:00</span></li>
+        <li><span class="k" data-i18n="info_sun">Sunday</span><span data-i18n="info_sun_val">Closed</span></li>
+        <li><span class="k" data-i18n="info_walkins">Walk-ins</span><span data-i18n="info_walkins_val">Welcome</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="hazard thin"></div>
+
+<section id="services" class="services">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow" data-i18n="services_eyebrow">What We Do</span>
+      <h2 data-i18n="services_title">Our Services</h2>
+    </div>
+    <div class="services-grid">
+
+      <div class="service-card">
+        <div class="service-photo">
+          <img src="vag.png" alt="VGA vehicle coding">
+        </div>
+        <div class="service-body">
+          <div class="service-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="1"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/></svg>
+          </div>
+          <h3 data-i18n="service1_title">VGA Vehicle Coding</h3>
+          <p data-i18n="service1_desc">We code and configure VGA control units to activate, adjust, and personalize your vehicle's electronic features — done precisely and safely.</p>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <div class="service-photo">
+          <img src="starry.png" alt="VGA vehicle coding">
+        </div>
+        <div class="service-body">
+          <div class="service-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <h3 data-i18n="service2_title">Interior Upholstery &amp; Starlight Headliners</h3>
+          <p data-i18n="service2_desc">Custom interior upholstery and fiber-optic starry sky headliner installations, tailored to your vehicle and your style.</p>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <div class="service-photo">
+          <img src="diag.jpg" alt="VGA vehicle coding">
+        </div>
+        <div class="service-body">
+          <div class="service-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          </div>
+          <h3 data-i18n="service3_title">Complete Vehicle Diagnostics</h3>
+          <p data-i18n="service3_desc">Full computer diagnostics across every system — engine, transmission, electronics — so you know exactly what's going on before any work begins.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="contact">
+  <div class="wrap contact-inner">
+    <div class="contact-info">
+      <span class="eyebrow" data-i18n="contact_eyebrow">Get In Touch</span>
+      <div class="section-head" style="margin-bottom:18px;">
+        <h2 data-i18n="contact_title">Contact Us</h2>
+      </div>
+
+      <div class="contact-row">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 12-9 12S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+        <div class="txt">
+          <div class="k" data-i18n="contact_addr_label">Address</div>
+          <div class="v">Side Street 12, Bitola, North Macedonia</div>
+        </div>
+      </div>
+      <div class="contact-row">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.4 2.1L8 9.7a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2z"/></svg></div>
+        <div class="txt">
+          <div class="k" data-i18n="contact_phone_label">Phone</div>
+          <div class="v">+389 70 123 456</div>
+        </div>
+      </div>
+      <div class="contact-row">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="m4 6 8 7 8-7"/></svg></div>
+        <div class="txt">
+          <div class="k" data-i18n="contact_email_label">Email</div>
+          <div class="v">info@sidestreetgarage.mk</div>
+        </div>
+      </div>
+      <div class="contact-row">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
+        <div class="txt">
+          <div class="k" data-i18n="contact_hours_label">Hours</div>
+          <div class="v" data-i18n="info_hours_val">Mon–Fri 8:00–18:00</div>
+        </div>
+      </div>
+
+
+    </div>
+
+    <form class="contact-form" id="contactForm">
+      <div class="row2">
+        <div class="field">
+          <label for="f-name" data-i18n="form_name_label">Full Name</label>
+          <input type="text" id="f-name" name="name" required>
+        </div>
+        <div class="field">
+          <label for="f-phone" data-i18n="form_phone_label">Phone</label>
+          <input type="tel" id="f-phone" name="phone">
+        </div>
+      </div>
+      <div class="field">
+        <label for="f-email" data-i18n="form_email_label">Email</label>
+        <input type="email" id="f-email" name="email" required>
+      </div>
+      <div class="field">
+        <label for="f-message" data-i18n="form_message_label">Message</label>
+        <textarea id="f-message" name="message" required></textarea>
+      </div>
+      <button type="submit" class="form-submit" data-i18n="form_submit_label">Send Message</button>
+      <p class="form-note" data-i18n="form_note">We usually reply within one business day.</p>
+      <div class="form-success" id="formSuccess" data-i18n="form_success">Thanks — your message has been noted. We'll be in touch shortly.</div>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="brand-name">Side Street <span style="color:var(--orange)">Garage</span></div>
+    <p style="margin-top:6px;" data-i18n="footer_text">&copy; 2026 Side Street Garage. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const translations = {
+    en: {
+      logo_slot:"LOGO",
+      nav_about:"About", nav_services:"Services", nav_contact:"Contact",
+      hero_eyebrow:"Local & Independent",
+      hero_title:"Honest work.<br>No <span class=\"accent\">shortcuts.</span>",
+      hero_sub:"Side Street Garage keeps your car looking fresh and diagnosed properly - straight answers, fair prices, and mechanics who understand what your car actually needs.",
+      hero_cta:"Book a Service",
+      hero_photo_label:"Shop / garage photo",
+      about_eyebrow:"Who We Are",
+      about_title:"About the Garage",
+      about_p1:"Side Street Garage is an auto repair shop serving the local community. We work on everyday cars, not just showroom pieces, and we treat every vehicle like it's our own.",
+      about_p2:"No upselling, no confusing invoices - just clear explanations, honest timelines, and repairs and services done right the first time.",
+      info_card_title:"At a Glance",
+      info_hours:"Hours", info_hours_val:"Mon–Fri 8:00–18:00",
+      info_sat:"Saturday", info_sat_val:"9:00–14:00",
+      info_sun:"Sunday", info_sun_val:"Closed",
+      info_walkins:"Walk-ins", info_walkins_val:"Welcome",
+      services_eyebrow:"What We Do", services_title:"Our Services", photo_label:"Service photo",
+      service1_title:"VGA Vehicle Coding",
+      service1_desc:"We code and configure VGA control units to activate, adjust, and personalize your vehicle's electronic features — done precisely and safely.",
+      service2_title:"Interior Upholstery & Starlight Headliners",
+      service2_desc:"Custom interior upholstery and fiber-optic starry sky headliner installations, tailored to your vehicle and your style.",
+      service3_title:"Complete Vehicle Diagnostics",
+      service3_desc:"Full computer diagnostics across every system — engine, transmission, electronics — so you know exactly what's going on before any work begins.",
+      contact_eyebrow:"Get In Touch", contact_title:"Contact Us",
+      contact_addr_label:"Address", contact_phone_label:"Phone", contact_email_label:"Email", contact_hours_label:"Hours",
+      map_placeholder:"Map / location embed",
+      form_name_label:"Full Name", form_phone_label:"Phone", form_email_label:"Email", form_message_label:"Message",
+      form_submit_label:"Send Message",
+      form_note:"We usually reply within one business day.",
+      form_success:"Thanks — your message has been noted. We'll be in touch shortly.",
+      footer_text:"© 2026 Side Street Garage. All rights reserved."
+    },
+    mk: {
+      logo_slot:"ЛОГО",
+      nav_about:"За нас", nav_services:"Услуги", nav_contact:"Контакт",
+      hero_eyebrow:"Локална и независна",
+      hero_title:"Чесна работа.<br>Без <span class=\"accent\">скратувања.</span>",
+      hero_sub:"Side Street Garage го одржува вашиот автомобил свеж и правилно дијагностициран — директни одговори, фер цени и механичари кои разбираат што навистина му треба на вашето возило.",
+      hero_cta:"Закажи термин",
+      hero_photo_label:"Фотографија од гаражата",
+      about_eyebrow:"Кои сме ние",
+      about_title:"За гаражата",
+      about_p1:"Side Street Garage е авто-сервисна работилница која ја опслужува локалната заедница. Работиме на секојдневни автомобили, не само витрински примероци, и се однесуваме кон секое возило како кон свое.",
+      about_p2:"Без непотребна продажба, без збунувачки фактури — само јасни објаснувања, реални рокови и поправки и услуги направени коректно од прв пат.",
+      info_card_title:"Накратко",
+      info_hours:"Работно време", info_hours_val:"Пон–Пет 8:00–18:00",
+      info_sat:"Сабота", info_sat_val:"9:00–14:00",
+      info_sun:"Недела", info_sun_val:"Затворено",
+      info_walkins:"Без закажување", info_walkins_val:"Добредојдени",
+      services_eyebrow:"Што правиме", services_title:"Нашите услуги", photo_label:"Фотографија од услугата",
+      service1_title:"VGA Кодирање на возила",
+      service1_desc:"Кодираме и конфигурираме VGA контролни единици за да ги активираме, прилагодиме и персонализираме електронските функции на вашето возило — прецизно и безбедно.",
+      service2_title:"Тапацирање на ентериер и монтирање на ѕвездено небо",
+      service2_desc:"Изработка на прилагодено тапацирање за ентериерот и монтирање на оптичко ѕвездено небо на таванот, приспособено на вашето возило и стил.",
+      service3_title:"Комплетна дијагностика на возила",
+      service3_desc:"Целосна компјутерска дијагностика на сите системи — мотор, менувач, електроника — за да знаете точно каква е состојбата пред да започне било каква работа.",
+      contact_eyebrow:"Стапете во контакт", contact_title:"Контактирајте нè",
+      contact_addr_label:"Адреса", contact_phone_label:"Телефон", contact_email_label:"Е-пошта", contact_hours_label:"Работно време",
+      map_placeholder:"Мапа / локација",
+      form_name_label:"Целосно име", form_phone_label:"Телефон", form_email_label:"Е-пошта", form_message_label:"Порака",
+      form_submit_label:"Испрати порака",
+      form_note:"Обично одговараме во рок од еден работен ден.",
+      form_success:"Ви благодариме — вашата порака е примена. Ќе ве контактираме наскоро.",
+      footer_text:"© 2026 Side Street Garage. Сите права задржани."
+    },
+    sq: {
+      logo_slot:"LOGO",
+      nav_about:"Rreth Nesh", nav_services:"Shërbimet", nav_contact:"Kontakt",
+      hero_eyebrow:"Lokal & i Pavarur",
+      hero_title:"Punë e ndershme.<br>Pa <span class=\"accent\">shkurtore.</span>",
+      hero_sub:"Side Street Garage e mban makinën tuaj të freskët dhe të diagnostikuar siç duhet — përgjigje të drejtpërdrejta, çmime të drejta dhe mekanikë që kuptojnë çfarë i duhet vërtet makinës suaj.",
+      hero_cta:"Cakto Termin",
+      hero_photo_label:"Foto e servisit",
+      about_eyebrow:"Kush Jemi",
+      about_title:"Rreth Servisit",
+      about_p1:"Side Street Garage është një servis auto që shërben komunitetin lokal. Punojmë me makina të përditshme, jo vetëm modele vitrine, dhe e trajtojmë çdo automjet sikur të ishte i yni.",
+      about_p2:"Pa shitje të tepërta, pa fatura konfuze — vetëm shpjegime të qarta, afate të ndershme, dhe riparime e shërbime të bëra si duhet që në herën e parë.",
+      info_card_title:"Me Pak Fjalë",
+      info_hours:"Orari", info_hours_val:"Hën–Pre 8:00–18:00",
+      info_sat:"E Shtunë", info_sat_val:"9:00–14:00",
+      info_sun:"E Diel", info_sun_val:"Mbyllur",
+      info_walkins:"Pa Termin", info_walkins_val:"Të mirëpritur",
+      services_eyebrow:"Çfarë Bëjmë", services_title:"Shërbimet Tona", photo_label:"Foto e shërbimit",
+      service1_title:"Kodim VGA i Automjeteve",
+      service1_desc:"Kodojmë dhe konfigurojmë njësitë kontrolluese VGA për të aktivizuar, rregulluar dhe personalizuar veçoritë elektronike të automjetit tuaj — me saktësi dhe siguri.",
+      service2_title:"Tapiceri Enterieri & Instalim i Qiellit me Yje",
+      service2_desc:"Tapiceri e personalizuar për enterierin dhe instalim i tavanit me fibra optike si qiell me yje, i përshtatur sipas automjetit dhe stilit tuaj.",
+      service3_title:"Diagnostikim i Plotë i Automjetit",
+      service3_desc:"Diagnostikim i plotë kompjuterik i të gjitha sistemeve — motorit, transmisionit, elektronikës — që të dini saktësisht gjendjen para se të fillojë çdo punë.",
+      contact_eyebrow:"Na Kontaktoni", contact_title:"Na Kontaktoni",
+      contact_addr_label:"Adresa", contact_phone_label:"Telefoni", contact_email_label:"Email", contact_hours_label:"Orari",
+      map_placeholder:"Hartë / vendndodhja",
+      form_name_label:"Emri i Plotë", form_phone_label:"Telefoni", form_email_label:"Email", form_message_label:"Mesazhi",
+      form_submit_label:"Dërgo Mesazhin",
+      form_note:"Zakonisht përgjigjemi brenda një dite pune.",
+      form_success:"Faleminderit — mesazhi juaj u mor. Do t'ju kontaktojmë shpejt.",
+      footer_text:"© 2026 Side Street Garage. Të gjitha të drejtat e rezervuara."
+    }
+  };
+
+  const COOKIE_NAME = "sideStreetLang";
+
+  function setCookie(name, value, days){
+    const d = new Date();
+    d.setTime(d.getTime() + (days*24*60*60*1000));
+    document.cookie = name + "=" + value + ";expires=" + d.toUTCString() + ";path=/;SameSite=Lax";
+  }
+
+  function getCookie(name){
+    const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+    return match ? match[2] : null;
+  }
+
+  function applyLanguage(lang){
+    const dict = translations[lang] || translations.en;
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if(dict[key] !== undefined){ el.textContent = dict[key]; }
+    });
+    document.querySelectorAll('[data-i18n-html]').forEach(el => {
+      const key = el.getAttribute('data-i18n-html');
+      if(dict[key] !== undefined){ el.innerHTML = dict[key]; }
+    });
+    document.querySelectorAll('.lang-switch button').forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+    });
+    document.documentElement.setAttribute('lang', lang);
+    document.getElementById('formSuccess').classList.remove('show');
+  }
+
+  function initLanguage(){
+    const saved = getCookie(COOKIE_NAME);
+    const lang = translations[saved] ? saved : 'en';
+    applyLanguage(lang);
+  }
+
+  document.querySelectorAll('.lang-switch button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const lang = btn.getAttribute('data-lang');
+      setCookie(COOKIE_NAME, lang, 365);
+      applyLanguage(lang);
+    });
+  });
+
+  const mobileToggle = document.getElementById('mobileToggle');
+  const mainNav = document.getElementById('mainNav');
+  mobileToggle.addEventListener('click', () => {
+    const isOpen = mainNav.classList.toggle('open');
+    mobileToggle.setAttribute('aria-expanded', isOpen);
+  });
+  mainNav.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      mainNav.classList.remove('open');
+      mobileToggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  const form = document.getElementById('contactForm');
+  const successBox = document.getElementById('formSuccess');
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    // treba da se dopraj so nekoj free servis za da stiga mail nekako nemam pojma
+    successBox.classList.add('show');
+    form.reset();
+  });
+
+  initLanguage();
+})();
+</script>
+
+</body>
+</html>
